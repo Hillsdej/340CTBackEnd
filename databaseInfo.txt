@@ -1,0 +1,8 @@
+I'm using a mySQL database  with node.js
+It will contain an items table
+Including the following fields:
+* name
+* quantity
+* weight
+* price per item
+* date added
