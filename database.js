@@ -7,6 +7,10 @@ var con = mysql.createConnection({
 });
 
 con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
+    if (err) throw err;
+    console.log("Connected!");
+    con.query("CREATE DATABASE Stock", function (err, result) {
+      if (err) throw err;
+      console.log("Database created");
+    });
 });

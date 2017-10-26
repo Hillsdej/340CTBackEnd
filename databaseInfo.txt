@@ -6,3 +6,5 @@ Including the following fields:
 * weight
 * price per item
 * date added
+
+database name = Stock
