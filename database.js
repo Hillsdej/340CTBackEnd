@@ -1,10 +1,19 @@
 var mysql = require('mysql');
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password"
-});
+exports.createConnection= function(conData, callback)
+{
+  var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "password",
+    database: "Stock"
+  });
+
+  con.connect(function(err){
+    if (err) callback(err);
+    callback(null, con);
+  });
+};
 
 // con.connect(function(err) {
 //     if (err) throw err;
