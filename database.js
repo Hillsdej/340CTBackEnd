@@ -38,3 +38,21 @@ exports.createTables = function(conData, callback){
         console.log("Table created");
     });
 };
+
+//To check all items
+selectAllItems = function(conData, callback){
+    var con =mysql.createConnection({
+      host:"localhost",
+      user:"root",
+      password:"password",
+      database:"Stock"
+    });
+
+    var sql ="SELECT * FROM Items;"
+    con.query(sql, function(err, result){
+      if (err) throw err;
+      console.log(result);
+    });
+};
+
+selectAllItems();

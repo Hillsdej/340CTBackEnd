@@ -9,3 +9,6 @@ Including the following fields:
 * date added
 
 database name = Stock
+
+Date Format
+YYYY-MM-DD

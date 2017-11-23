@@ -2,8 +2,19 @@ var restify = require('restify');
 var user = require('./addItem');
 var db = require('./database');
 
+const corsMiddleware = require('restify-cors-middleware');
+
+const cors = corsMiddleware({
+    preflightMaxAge: 5,
+    origins:['*'],
+    allowHeaders:['API-Token'],
+    exposeHeaders: ['API-Token-Expiry']
+});
+
 //create restify module
 const server = restify.createServer();
+server.pre(cors.preflight);
+server.use(cors.actual);
 
 server.use(restify.plugins.fullResponse());
 server.use(restify.plugins.bodyParser());
