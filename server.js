@@ -22,12 +22,12 @@ server.use(restify.plugins.bodyParser());
 server.use(restify.plugins.queryParser());
 server.use(restify.plugins.authorizationParser());
 
-server.use(function(req,res,next){
-    res.header("Access-Control-Allow-Origin","*");
-    res.header("Access-Control-Allow-Methods","GET");
-    res.header("Access-Control-Allow-Headers","Content-Type");
-    next();
-})
+// server.use(function(req,res,next){
+//     res.header("Access-Control-Allow-Origin","*");
+//     res.header("Access-Control-Allow-Methods","GET");
+//     res.header("Access-Control-Allow-Headers","Content-Type");
+//     next();
+// })
 
 const databaseData = {
     host: "localhost",
@@ -63,6 +63,8 @@ server.get('/items',(req, res)=>{
             return;
         }
         console.log("reached?");
+        console.log(data);
+
         // res.send(200,data);
         res.status(200);
         res.end(data);
