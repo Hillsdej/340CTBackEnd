@@ -40,7 +40,7 @@ exports.createTables = function(conData, callback){
 };
 
 //To check all items
-selectAllItems = function(conData, callback){
+exports.selectAllItems = function(conData, callback){
     var con =mysql.createConnection({
       host:"localhost",
       user:"root",
@@ -55,4 +55,4 @@ selectAllItems = function(conData, callback){
     });
 };
 
-selectAllItems();
+// selectAllItems();
