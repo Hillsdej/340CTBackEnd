@@ -4,21 +4,19 @@ var db = require('./database');
 //check if item exists in table with a get method
 //if item exists delete item and return success message, else return an error message
 
-exports.delete = function(conData, req, callback){
+exports.deleteByID = function(conData, req, callback){
     db.createConnection(conData, function(err, data){
         if (err){
             callback(err);
             return;
         }
+        
+        id = req.params.id;
+        console.log(id);
 
-        var item = {
-            name: req.body['name'],
-            quantity: req.body['quantity'],
-            date: req.body['date']
-        };
-
-        // data.query(' DELETE INTO Items SET ?', item, function(err, result){
-        //     callback(err, item);
-        // });
+        data.query(' DELETE FROM Items WHERE id = '+ id, function(err, result){
+            data = JSON.stringify(result);
+            callback(err, data);
+        });
     });
 };

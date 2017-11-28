@@ -2,6 +2,7 @@ var restify = require('restify');
 var item = require('./addItem');
 var db = require('./database');
 var items = require("./getItems")
+var removeItem = require("./deleteItem")
 
 const corsMiddleware = require('restify-cors-middleware');
 
@@ -57,6 +58,22 @@ server.get('/items',(req, res)=>{
        
         res.setHeader('content-type', 'application/json')
         res.setHeader('accepts','GET');
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        console.log("reached?");
+        console.log(data);
+
+        // res.send(200,data);
+        res.status(200);
+        res.end(data);
+    });
+});
+
+server.del('/items/4',(req,res)=>{
+    removeItem.deleteByID(databaseData, req, function(err,data){
         if(err){
             res.status(400);
             res.end("error: "+err);
