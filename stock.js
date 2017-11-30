@@ -44,3 +44,18 @@ exports.deleteById = function(conData, req, callback){
         });
     });
 };
+
+exports.getAll = function(conData, req, callback){
+    "use strict"
+    db.createConnection(conData, function(err, data){
+        if (err){
+            callback(err);
+            return;
+        }
+
+        data.query('SELECT * from Stock', function(err, result){
+            let data = JSON.stringify(result);
+            callback(err, data);
+        });
+    });
+};

@@ -82,6 +82,18 @@ server.del('stock/:id',(req, res)=>{
     });
 })
 
+server.get('stock',(req, res)=>{
+    stock.getAll(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        res.status(200);
+        res.end(data);
+    });
+});
+
 
 
 
