@@ -10,17 +10,20 @@ exports.add = function(conData, req, callback){
             return;
         }
 
-        var staff = {
-            name : req.body['name'],
-            role: req.body['role'],
-            password: req.body['password']
+        var item = {
+            item_name: req.body['item_name'],
+            item_price: req.body['item_price'],
+            quantity: req.body['quantity'],
+            maximum_stock: req.body['maximum_stock'],
+            minimum_stock: req.body['minimum_stock'],
+            date: new Date()
         };
 
         // const bcrypt = require('bcryptjs');
         // user.password = bcrypt.hashSync(user.password, 10);
 
-        data.query('INSERT INTO Staff SET ?', staff, function(err, result){
-            callback(err, staff);
+        data.query('INSERT INTO Stock SET ?', item, function(err, result){
+            callback(err, item);
         });
     });
 };
