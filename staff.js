@@ -25,6 +25,21 @@ exports.add = function(conData, req, callback){
     });
 };
 
+exports.getAll = function(conData, req, callback){
+    "use strict"
+    db.createConnection(conData, function(err, data){
+        if (err){
+            callback(err);
+            return;
+        }
+
+        data.query('SELECT * from Staff', function(err, result){
+            let data = JSON.stringify(result);
+            callback(err, data);
+        });
+    });
+};
+
 // exports.login = function(conData,req,callback){
 //     db.createConnection(conData, function(err, data)
 //     {

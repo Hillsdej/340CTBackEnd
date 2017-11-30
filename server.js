@@ -63,6 +63,19 @@ server.post('staff',(req, res)=>{
     });
 });
 
+server.get('staff',(req, res)=>{
+    staff.getAll(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        res.status(200);
+        res.end(data);
+    });
+});
+
+
 server.get('/items',(req, res)=>{
     // res.header("Access-Control-Allow-Origin", "*");
     // res.header("Access-Control-Allow-Headers", "X-Requested-With");
