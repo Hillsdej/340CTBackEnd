@@ -1,5 +1,6 @@
 var restify = require('restify');
 var item = require('./addItem');
+var staff = require('./staff');
 var db = require('./database');
 var items = require("./getItems")
 var removeItem = require("./deleteItem")
@@ -8,8 +9,9 @@ const corsMiddleware = require('restify-cors-middleware');
 
 const cors = corsMiddleware({
     preflightMaxAge: 5,
-    origins:['*'],
-    allowHeaders:['API-Token'],
+    origins:['http://127.0.0.1:8081'],
+    credentials:true,
+    allowHeaders:['API-Token', 'Authorization'],
     exposeHeaders: ['API-Token-Expiry']
 });
 
@@ -34,13 +36,24 @@ const databaseData = {
     host: "localhost",
     user: "root",
     password: "password",
-    database: "Stock"
+    database: "SmartMart"
 };
 
 var port = 8080;
 
 server.post('item/add',(req, res)=>{
     item.add(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+        }
+        res.status(201);
+        res.end("success");
+    });
+});
+
+server.post('staff',(req, res)=>{
+    staff.add(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             res.end("error: "+err);

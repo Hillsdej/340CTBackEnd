@@ -24,7 +24,7 @@ exports.createConnection= function(conData, callback)
 //     });
 // });
 
-createTables = function(conData, callback){
+exports.createTables = function(conData, callback){
     var con = mysql.createConnection({
         host: "localhost",
         user: "root",
@@ -54,5 +54,3 @@ exports.selectAllItems = function(conData, callback){
       console.log(result);
     });
 };
-
-createTables();
