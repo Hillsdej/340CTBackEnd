@@ -70,6 +70,21 @@ server.post('stock',(req, res)=>{
     });
 });
 
+server.del('stock/:id',(req, res)=>{
+    stock.deleteById(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        res.status(201);
+        res.end(data);
+    });
+})
+
+
+
+
 server.listen(port, err => {
     if (err) {
         console.error(err)

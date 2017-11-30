@@ -27,3 +27,20 @@ exports.add = function(conData, req, callback){
         });
     });
 };
+
+exports.deleteById = function(conData, req, callback){
+    "use strict"
+    db.createConnection(conData, function(err,data){
+        if(err){
+            callback(err);
+            return;
+        }
+
+        let id = req.params.id;
+
+        data.query('DELETE from Stock WHERE item_id = ' + id, function(err,result){
+            let data = JSON.stringify(result);
+            callback(err,data);
+        });
+    });
+};
