@@ -40,7 +40,7 @@ exports.createTables = function(conData, callback){
 };
 
 //To check all items
-// selectAllItems = function(conData, callback){
+// selectAllOrders = function(conData, callback){
 //     var con =mysql.createConnection({
 //       host:"localhost",
 //       user:"root",
@@ -48,11 +48,11 @@ exports.createTables = function(conData, callback){
 //       database:"SmartMart"
 //     });
 
-//     var sql ="SELECT * FROM Stock;"
+//     var sql ="SELECT * FROM Orders;"
 //     con.query(sql, function(err, result){
 //       if (err) throw err;
 //       console.log(result);
 //     });
 // };
 
-// selectAllItems();
+// selectAllOrders();

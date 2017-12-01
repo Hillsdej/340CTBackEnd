@@ -3,8 +3,9 @@ var item = require('./addItem');
 var staff = require('./staff');
 var stock = require('./stock');
 var db = require('./database');
-var items = require("./getItems")
-var removeItem = require("./deleteItem")
+var order = require('./orders');
+var items = require("./getItems");
+var removeItem = require("./deleteItem");
 
 const corsMiddleware = require('restify-cors-middleware');
 
@@ -106,7 +107,16 @@ server.put('stock/:id',(req,res)=>{
     });
 });
 
-
+server.post('order',(req, res)=>{
+    order.add(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+        }
+        res.status(201);
+        res.end("success");
+    });
+});
 
 
 server.listen(port, err => {

@@ -1,26 +1,39 @@
 var db = require('./database');
-//var authentication = require('./security')
-//const bcrypt = require('bcryptjs')
-//var auth = require('./authenticate');
+var auth = require('./authentication');
 
 exports.add = function(conData, req, callback){
+    "use strict"
     db.createConnection(conData, function(err, data){
         if (err){
             callback(err);
             return;
         }
 
-        var staff = {
-            name : req.body['name'],
-            role: req.body['role'],
-            password: req.body['password']
-        };
+        auth.loginStaff(conData, req, function(err, result){
+            if (err){
+                callback(err);
+                return;
+            }
+            console.log(result.login);
+            console.log(result);
+            
+            if (result.login === "successful"){
+                var order = {
+                    arrived : false,
+                    staff_id: result.staff_id[0].staff_id,
+                    date: new Date()
+                };
 
-        // const bcrypt = require('bcryptjs');
-        // user.password = bcrypt.hashSync(user.password, 10);
+                data.query('INSERT INTO Orders SET ?', order, function(err, result){
+                    callback(err, order);
+                });
 
-        data.query('INSERT INTO Staff SET ?', staff, function(err, result){
-            callback(err, staff);
-        });
+            }
+            else{
+                let err = "incorrect name or password";
+                callback(err);
+                return;
+            }
+        })
     });
 };
