@@ -94,6 +94,18 @@ server.get('stock',(req, res)=>{
     });
 });
 
+server.put('stock/:id',(req,res)=>{
+    stock.updateById(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        res.status(200);
+        res.end("success");
+    });
+});
+
 
 
 

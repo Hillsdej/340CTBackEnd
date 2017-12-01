@@ -59,3 +59,25 @@ exports.getAll = function(conData, req, callback){
         });
     });
 };
+
+exports.updateById = function(conData, req, callback){
+    "use strict"
+    db.createConnection(conData, function(err, data){
+        if (err){
+            callback(err);
+            return;
+        }
+
+        let id = req.params.id;
+
+        var item = {
+            quantity: req.body['quantity'],
+            date: new Date()
+        };
+
+
+        data.query(' UPDATE Stock SET ? WHERE item_id = ' +req.params.id, item, function(err, result){
+            callback(err, data);
+        });
+    });
+};

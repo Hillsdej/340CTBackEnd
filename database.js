@@ -40,19 +40,19 @@ exports.createTables = function(conData, callback){
 };
 
 //To check all items
-selectAllItems = function(conData, callback){
-    var con =mysql.createConnection({
-      host:"localhost",
-      user:"root",
-      password:"password",
-      database:"SmartMart"
-    });
+// selectAllItems = function(conData, callback){
+//     var con =mysql.createConnection({
+//       host:"localhost",
+//       user:"root",
+//       password:"password",
+//       database:"SmartMart"
+//     });
 
-    var sql ="SELECT * FROM Stock;"
-    con.query(sql, function(err, result){
-      if (err) throw err;
-      console.log(result);
-    });
-};
+//     var sql ="SELECT * FROM Stock;"
+//     con.query(sql, function(err, result){
+//       if (err) throw err;
+//       console.log(result);
+//     });
+// };
 
-selectAllItems();
+// selectAllItems();
