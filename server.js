@@ -95,7 +95,23 @@ server.get('stock',(req, res)=>{
     });
 });
 
+//for updating stock removing
 server.put('stock/:id',(req,res)=>{
+    
+    stock.updateById(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        
+        res.status(200);
+        res.end("success");
+    });
+});
+
+//for updating order adding 
+server.put('order/:id',(req,res)=>{
     
     order.updateById(databaseData, req, function(err, data){
         if(err){
@@ -120,6 +136,17 @@ server.post('order',(req, res)=>{
     });
 });
 
+server.get('order',(req, res)=>{
+    order.getAll(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        res.status(200);
+        res.end(data);
+    });
+});
 
 server.listen(port, err => {
     if (err) {
