@@ -4,6 +4,7 @@ var staff = require('./staff');
 var stock = require('./stock');
 var db = require('./database');
 var order = require('./orders');
+var orderItems = require('./orderItems');
 var items = require("./getItems");
 var removeItem = require("./deleteItem");
 
@@ -138,6 +139,18 @@ server.post('order',(req, res)=>{
 
 server.get('order',(req, res)=>{
     order.getAll(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        res.status(200);
+        res.end(data);
+    });
+});
+
+server.get('order/item',(req, res)=>{
+    orderItems.getAll(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             res.end("error: "+err);
