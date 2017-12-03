@@ -33,7 +33,7 @@ exports.getAll = function(conData, req, callback){
             return;
         }
 
-        data.query('SELECT * from Staff', function(err, result){
+        data.query('SELECT staff_id, name, role from Staff', function(err, result){
             let data = JSON.stringify(result);
             callback(err, data);
         });
