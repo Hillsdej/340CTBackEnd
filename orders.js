@@ -1,6 +1,7 @@
 var db = require('./database');
 var auth = require('./authentication');
 
+
 exports.add = function(conData, req, callback){
     "use strict"
     db.createConnection(conData, function(err, data){
@@ -52,12 +53,10 @@ exports.add = function(conData, req, callback){
                     return;
                 }
                 else{
-                    console.log(order_id);
-                    console.log(req.body['item_name'])
                     var item_id;
                     data.query('SELECT item_id FROM Stock WHERE item_name="' + req.body['item_name'] + '";', function(err,item_id){
                         if (err) throw err;
-                        console.log(item_id)
+                        
                         var itemInfo = {
                             order_id : order_id[0].order_id,
                             item_id : item_id[0].item_id,
@@ -74,3 +73,66 @@ exports.add = function(conData, req, callback){
 
     });
 };
+
+exports.updateById = function(conData, req, callback){
+    "use strict"
+    db.createConnection(conData, function(err, data){
+        if (err){
+            callback(err);
+            return;
+        }
+
+        auth.loginStaff(conData, req, function(err, result){
+            if (err){
+                callback(err);
+                return;
+            }
+            console.log(result.login);
+            console.log(result);
+
+            var order = {
+                arrived : true,
+                staff_id: result.staff_id[0].staff_id,
+                date: new Date()
+            }
+            
+            if (result.login === "successful"){
+                data.query(' UPDATE Orders SET ? WHERE order_id = ' +req.params.id, order, function(err, result){
+                    callback(err, data);
+                });
+                var itemInfo;
+                data.query('SELECT item_id, amount FROM Order_Items WHERE order_id = "'+req.params.id+'"', function(err, itemInfo){
+                    callback(err,itemInfo);
+                    getQuantity(itemInfo);
+                    //return itemInfo;
+                })
+            }
+        });
+        
+        function getQuantity(itemInfo){
+            console.log(itemInfo)
+            
+
+            data.query('SELECT quantity FROM Stock WHERE item_id = "'+itemInfo[0].item_id+'";', function(err, result){
+                console.log("this is the result")
+                console.log(result);
+                updateStock(result, itemInfo);
+                callback(err, result);
+            })
+        }
+
+        function updateStock(quantity, itemInfo){
+            var item = {
+                quantity: itemInfo[0].amount + quantity[0].quantity,
+                date: new Date()
+            };
+    
+            
+            data.query(' UPDATE Stock SET ? WHERE item_id = ' + itemInfo[0].item_id, item, function(err, result){
+                callback(err, result);
+            });
+        }
+    });
+
+    
+} 

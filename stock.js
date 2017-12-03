@@ -60,23 +60,22 @@ exports.getAll = function(conData, req, callback){
     });
 };
 
-exports.updateById = function(conData, req, callback){
-    "use strict"
+exports.updateById = function(itemInfo, conData, req, callback ){
     db.createConnection(conData, function(err, data){
         if (err){
             callback(err);
             return;
         }
 
-        let id = req.params.id;
+        //console.log(itemInfo);
 
         var item = {
-            quantity: req.body['quantity'],
+            quantity: itemInfo[0].amount,
             date: new Date()
         };
 
 
-        data.query(' UPDATE Stock SET ? WHERE item_id = ' +req.params.id, item, function(err, result){
+        data.query(' UPDATE Stock SET ? WHERE item_id = ' + itemInfo[0].item_id, item, function(err, result){
             callback(err, data);
         });
     });

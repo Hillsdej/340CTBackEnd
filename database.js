@@ -49,7 +49,7 @@ selectAllOrders = function(conData, callback){
     });
 
     var milk = 'milk'
-    var sql = 'SELECT * FROM Order_Items;'
+    var sql = 'SELECT * FROM Orders;'
     //var sql ="SELECT item_id FROM Stock ORDER BY item_id DESC LIMIT 1;"
     //var sql ="ALTER TABLE Order_Items ADD PRIMARY KEY(order_id,item_id);"
     var x;
