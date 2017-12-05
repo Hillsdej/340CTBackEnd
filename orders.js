@@ -59,7 +59,7 @@ exports.add = function(conData, req, callback){
                         
                         var itemInfo = {
                             order_id : order_id[0].order_id,
-                            item_id : item_id[0].item_id,
+                            item_id : req.body['item_id'],
                             amount : req.body['amount']
                         }
                         
