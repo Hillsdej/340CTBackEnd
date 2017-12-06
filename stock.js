@@ -1,9 +1,11 @@
 var db = require('./database');
+var validate = require('./validation')
 //var authentication = require('./security')
 //const bcrypt = require('bcryptjs')
 //var auth = require('./authenticate');
 
 exports.add = function(conData, req, callback){
+    "use strict"
     db.createConnection(conData, function(err, data){
         if (err){
             callback(err);
@@ -17,7 +19,49 @@ exports.add = function(conData, req, callback){
             maximum_stock: req.body['maximum_stock'],
             minimum_stock: req.body['minimum_stock'],
             date: new Date()
-        };
+        };     
+        
+        var itemArray = [];
+        
+        for(var i in item)
+            itemArray.push(item[i]);
+
+        validateStr = validate.validateStr(item.item_name);
+        if (validateStr == "invalid"){
+            let err = "invalid type"
+            callback(err);
+            return
+        }
+        else if(validation == "empty field"){
+            let err = "missing/empty field"
+            callback(err);
+            return
+        } 
+        else if(validation == "string too long"){
+            console.log("error at: "+ i)
+            let err = "item over max character count"
+            callback(err);
+            return
+        } 
+        
+        
+        for (i=2; i<6; i++){
+            var validateInt = validate.validateInt(itemArray[i]);
+            if (validateInt == "invalid"){
+                console.log("error at: "+ i)
+                let err = "invalid type"
+                callback(err);
+                return
+            }
+            else if(validation == "empty field"){
+                console.log("error at: "+ i)
+                let err = "missing/empty field"
+                callback(err);
+                return
+            } 
+        }
+
+        
 
         data.query('INSERT INTO Stock SET ?', item, function(err, result){
             callback(err, item);
