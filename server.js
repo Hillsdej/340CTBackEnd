@@ -65,6 +65,7 @@ server.post('stock',(req, res)=>{
     stock.add(databaseData, req, function(err, data){
         if(err){
             res.status(400);
+            console.log(err)
             res.end("error: "+err);
         }
         res.status(201);
