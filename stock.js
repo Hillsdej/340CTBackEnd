@@ -1,5 +1,6 @@
 var db = require('./database');
 var validate = require('./validation')
+var stock = require('./stock')
 //var authentication = require('./security')
 //const bcrypt = require('bcryptjs')
 //var auth = require('./authenticate');
@@ -26,18 +27,18 @@ exports.add = function(conData, req, callback){
         for(var i in item)
             itemArray.push(item[i]);
 
-        validateStr = validate.validateStr(item.item_name);
+        var validateStr = validate.validateStr(item.item_name);
         if (validateStr == "invalid"){
             let err = "invalid type"
             callback(err);
             return
         }
-        else if(validation == "empty field"){
+        else if(validateStr== "empty field"){
             let err = "missing/empty field"
             callback(err);
             return
         } 
-        else if(validation == "string too long"){
+        else if(validateStr == "string too long"){
             console.log("error at: "+ i)
             let err = "item over max character count"
             callback(err);
@@ -53,19 +54,31 @@ exports.add = function(conData, req, callback){
                 callback(err);
                 return
             }
-            else if(validation == "empty field"){
+            else if(validateInt == "empty field"){
                 console.log("error at: "+ i)
                 let err = "missing/empty field"
                 callback(err);
                 return
             } 
         }
-
         
-
-        data.query('INSERT INTO Stock SET ?', item, function(err, result){
-            callback(err, item);
-        });
+        var error = false;
+        data.query('SELECT * FROM Stock', function(err, result){
+            for(i=0; i<result.length; i++){
+                if(result[i].item_name == item.item_name){
+                    var error = true;
+                }
+            }
+            if (error==true){
+                let err = "item already exists";
+                callback (err)
+            }
+            else{
+                data.query('INSERT INTO Stock SET ?', item, function(err, result){
+                    callback(err, item);
+                });  
+            }
+        });                    
     });
 };
 
@@ -112,11 +125,19 @@ exports.updateById = function(conData, req, callback ){
         let id = req.params.id;
 
         var itemInfo;
-        data.query('SELECT quantity FROM Stock WHERE item_id = '+id, function(err,itemInfo){
+        data.query('SELECT quantity, minimum_stock FROM Stock WHERE item_id = '+id, function(err,itemInfo){
             callback(err, itemInfo);  
             makeSale(itemInfo, id);
         })
-        //console.log(itemInfo);
+
+        if (itemInfo[0].quantity-req.body['quantity'] < 0){
+            let err = "Cannot sell more than is stored in stock!"
+            callback(err);
+        }
+        else if( itemInfo[0].quantity-req.body['quantity']<itemInfo[0].minimum_stock){
+            var mustOrderStock;
+        }
+
         function makeSale(itemInfo, item_id){
             console.log(itemInfo)
             var item = {

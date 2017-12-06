@@ -49,14 +49,16 @@ selectAllOrders = function(conData, callback){
     });
 
     var milk = 'milk'
-    var sql = 'SELECT * FROM Orders ;'
+    var sql = 'SELECT * FROM Stock;'
     //var sql ="SELECT item_id FROM Stock ORDER BY item_id DESC LIMIT 1;"
     //var sql ="ALTER TABLE Order_Items ADD PRIMARY KEY(order_id,item_id);"
     var x;
     con.query(sql, function(err, x){
       if (err) throw err;
-      console.log(x);
+      for(i=0; i<x.length; i++){
+        console.log(x[i].item_name);
+      }
     });
 };
 
-// selectAllOrders();
+ //selectAllOrders();
