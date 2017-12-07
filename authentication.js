@@ -39,7 +39,9 @@ exports.loginStaff = (conData, request, callback)=>{
                 callback(null, {login:"successful", staff_id:result});
             }
             else{
-                callback(null, {login:"failed"});
+                let err = "Incorrect username or password"
+                callback(err);
+                return;
             }
         });
     });

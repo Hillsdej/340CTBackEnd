@@ -162,6 +162,18 @@ server.get('order/item',(req, res)=>{
     });
 });
 
+server.del('order/:id',(req, res)=>{
+    order.deleteById(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        res.status(200);
+        res.end(data);
+    });
+});
+
 server.listen(port, err => {
     if (err) {
         console.error(err)

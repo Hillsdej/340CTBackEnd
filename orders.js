@@ -12,6 +12,8 @@ exports.add = function(conData, req, callback){
 
         auth.loginStaff(conData, req, function(err, result){
             if (err){
+                console.log("entered")
+                let err = "incorrect name or password";
                 callback(err);
                 return;
             }
@@ -146,6 +148,23 @@ exports.getAll = function(conData, req, callback){
         data.query('SELECT * from Orders', function(err, result){
             let data = JSON.stringify(result);
             callback(err, data);
+        });
+    });
+};
+
+exports.deleteById = function(conData, req, callback){
+    "use strict"
+    db.createConnection(conData, function(err,data){
+        if(err){
+            callback(err);
+            return;
+        }
+
+        let id = req.params.id;
+
+        data.query('DELETE FROM Orders WHERE order_id = ' + id, function(err,result){
+            let data = JSON.stringify(result);
+            callback(err,data);
         });
     });
 };
