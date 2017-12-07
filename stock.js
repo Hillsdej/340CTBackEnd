@@ -130,13 +130,13 @@ exports.updateById = function(conData, req, callback ){
             makeSale(itemInfo, id);
         })
 
-        if (itemInfo[0].quantity-req.body['quantity'] < 0){
-            let err = "Cannot sell more than is stored in stock!"
-            callback(err);
-        }
-        else if( itemInfo[0].quantity-req.body['quantity']<itemInfo[0].minimum_stock){
-            var mustOrderStock;
-        }
+        // if (itemInfo[0].quantity-req.body['quantity'] < 0){
+        //     let err = "Cannot sell more than is stored in stock!"
+        //     callback(err);
+        // }
+        // else if( itemInfo[0].quantity-req.body['quantity']<itemInfo[0].minimum_stock){
+        //     var mustOrderStock;
+        // }
 
         function makeSale(itemInfo, item_id){
             console.log(itemInfo)
