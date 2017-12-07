@@ -1,10 +1,11 @@
+//imports necessary modules
 var restify = require('restify');
 var item = require('./addItem');
 var staff = require('./staff');
-var stock = require('./stock');
+var stockProcessor = require('./stock');
 var db = require('./database');
-var order = require('./orders');
-var orderItems = require('./orderItems');
+var orderProcessor = require('./orders');
+var orderItemProcessor = require('./orderItems');
 var items = require("./getItems");
 var removeItem = require("./deleteItem");
 
@@ -18,8 +19,8 @@ const cors = corsMiddleware({
     exposeHeaders: ['API-Token-Expiry']
 });
 
-//create restify module
-const eventLoop = restify.createServer();
+//creates restful API
+const eventLoop = restify.createServer(); //constant loop that looks for client requests
 eventLoop.pre(cors.preflight);
 eventLoop.use(cors.actual);
 
@@ -28,6 +29,7 @@ eventLoop.use(restify.plugins.bodyParser());
 eventLoop.use(restify.plugins.queryParser());
 eventLoop.use(restify.plugins.authorizationParser());
 
+//information required to access the database
 const databaseData = {
     host: "localhost",
     user: "root",
@@ -35,8 +37,10 @@ const databaseData = {
     database: "SmartMart"
 };
 
+//runs on localhost port
 var port = 8080;
-//---------------staff--------------------------//
+
+//---------------Staff Events--------------------------//
 eventLoop.post('staff',(req, res)=>{
     staff.add(databaseData, req, function(err, data){
         if(err){
@@ -60,9 +64,9 @@ eventLoop.get('staff',(req, res)=>{
     });
 });
 
-//------------------stock----------------------//
+//------------------Stock Events----------------------//
 eventLoop.post('stock',(req, res)=>{
-    stock.add(databaseData, req, function(err, data){
+    stockProcessor.add(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             console.log(err)
@@ -73,20 +77,8 @@ eventLoop.post('stock',(req, res)=>{
     });
 });
 
-eventLoop.del('stock/:id',(req, res)=>{
-    stock.deleteById(databaseData, req, function(err, data){
-        if(err){
-            res.status(400);
-            res.end("error: "+err);
-            return;
-        }
-        res.status(201);
-        res.end(data);
-    });
-})
-
 eventLoop.get('stock',(req, res)=>{
-    stock.getAll(databaseData, req, function(err, data){
+    stockProcessor.getAll(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             res.end("error: "+err);
@@ -100,7 +92,7 @@ eventLoop.get('stock',(req, res)=>{
 //for updating stock removing
 eventLoop.put('stock/:id',(req,res)=>{
     
-    stock.updateById(databaseData, req, function(err, data){
+    stockProcessor.updateById(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             res.end("error: "+err);
@@ -112,23 +104,21 @@ eventLoop.put('stock/:id',(req,res)=>{
     });
 });
 
-//for updating order adding 
-eventLoop.put('order/:id',(req,res)=>{
-    
-    order.updateById(databaseData, req, function(err, data){
+eventLoop.del('stock/:id',(req, res)=>{
+    stockProcessor.deleteById(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             res.end("error: "+err);
             return;
         }
-        
-        res.status(200);
-        res.end("success");
+        res.status(201);
+        res.end(data);
     });
-});
+})
 
+//--------------------Order Events-----------------//
 eventLoop.post('order',(req, res)=>{
-    order.add(databaseData, req, function(err, data){
+    orderProcessor.add(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             res.end("error: "+err);
@@ -139,7 +129,7 @@ eventLoop.post('order',(req, res)=>{
 });
 
 eventLoop.get('order',(req, res)=>{
-    order.getAll(databaseData, req, function(err, data){
+    orderProcessor.getAll(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             res.end("error: "+err);
@@ -150,20 +140,36 @@ eventLoop.get('order',(req, res)=>{
     });
 });
 
-eventLoop.get('order/item',(req, res)=>{
-    orderItems.getAll(databaseData, req, function(err, data){
+eventLoop.put('order/:id',(req,res)=>{
+    
+    orderProcessor.updateById(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             res.end("error: "+err);
             return;
         }
+        
         res.status(200);
-        res.end(data);
+        res.end("success");
     });
 });
 
 eventLoop.del('order/:id',(req, res)=>{
-    order.deleteById(databaseData, req, function(err, data){
+    orderProcessor.deleteById(databaseData, req, function(err, data){
+        if(err){
+            res.status(400);
+            res.end("error: "+err);
+            return;
+        }
+        res.status(200);
+        res.end(data);
+    });
+});
+
+//---------------Order Item Events--------------//
+
+eventLoop.get('order/item',(req, res)=>{
+    orderItemProcessor.getAll(databaseData, req, function(err, data){
         if(err){
             res.status(400);
             res.end("error: "+err);
