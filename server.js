@@ -19,14 +19,14 @@ const cors = corsMiddleware({
 });
 
 //create restify module
-const server = restify.createServer();
-server.pre(cors.preflight);
-server.use(cors.actual);
+const eventLoop = restify.createServer();
+eventLoop.pre(cors.preflight);
+eventLoop.use(cors.actual);
 
-server.use(restify.plugins.fullResponse());
-server.use(restify.plugins.bodyParser());
-server.use(restify.plugins.queryParser());
-server.use(restify.plugins.authorizationParser());
+eventLoop.use(restify.plugins.fullResponse());
+eventLoop.use(restify.plugins.bodyParser());
+eventLoop.use(restify.plugins.queryParser());
+eventLoop.use(restify.plugins.authorizationParser());
 
 const databaseData = {
     host: "localhost",
@@ -37,7 +37,7 @@ const databaseData = {
 
 var port = 8080;
 //---------------staff--------------------------//
-server.post('staff',(req, res)=>{
+eventLoop.post('staff',(req, res)=>{
     staff.add(databaseData, req, function(err, data){
         if(err){
             res.status(400);
@@ -48,7 +48,7 @@ server.post('staff',(req, res)=>{
     });
 });
 
-server.get('staff',(req, res)=>{
+eventLoop.get('staff',(req, res)=>{
     staff.getAll(databaseData, req, function(err, data){
         if(err){
             res.status(400);
@@ -61,7 +61,7 @@ server.get('staff',(req, res)=>{
 });
 
 //------------------stock----------------------//
-server.post('stock',(req, res)=>{
+eventLoop.post('stock',(req, res)=>{
     stock.add(databaseData, req, function(err, data){
         if(err){
             res.status(400);
@@ -73,7 +73,7 @@ server.post('stock',(req, res)=>{
     });
 });
 
-server.del('stock/:id',(req, res)=>{
+eventLoop.del('stock/:id',(req, res)=>{
     stock.deleteById(databaseData, req, function(err, data){
         if(err){
             res.status(400);
@@ -85,7 +85,7 @@ server.del('stock/:id',(req, res)=>{
     });
 })
 
-server.get('stock',(req, res)=>{
+eventLoop.get('stock',(req, res)=>{
     stock.getAll(databaseData, req, function(err, data){
         if(err){
             res.status(400);
@@ -98,7 +98,7 @@ server.get('stock',(req, res)=>{
 });
 
 //for updating stock removing
-server.put('stock/:id',(req,res)=>{
+eventLoop.put('stock/:id',(req,res)=>{
     
     stock.updateById(databaseData, req, function(err, data){
         if(err){
@@ -113,7 +113,7 @@ server.put('stock/:id',(req,res)=>{
 });
 
 //for updating order adding 
-server.put('order/:id',(req,res)=>{
+eventLoop.put('order/:id',(req,res)=>{
     
     order.updateById(databaseData, req, function(err, data){
         if(err){
@@ -127,7 +127,7 @@ server.put('order/:id',(req,res)=>{
     });
 });
 
-server.post('order',(req, res)=>{
+eventLoop.post('order',(req, res)=>{
     order.add(databaseData, req, function(err, data){
         if(err){
             res.status(400);
@@ -138,7 +138,7 @@ server.post('order',(req, res)=>{
     });
 });
 
-server.get('order',(req, res)=>{
+eventLoop.get('order',(req, res)=>{
     order.getAll(databaseData, req, function(err, data){
         if(err){
             res.status(400);
@@ -150,7 +150,7 @@ server.get('order',(req, res)=>{
     });
 });
 
-server.get('order/item',(req, res)=>{
+eventLoop.get('order/item',(req, res)=>{
     orderItems.getAll(databaseData, req, function(err, data){
         if(err){
             res.status(400);
@@ -162,7 +162,7 @@ server.get('order/item',(req, res)=>{
     });
 });
 
-server.del('order/:id',(req, res)=>{
+eventLoop.del('order/:id',(req, res)=>{
     order.deleteById(databaseData, req, function(err, data){
         if(err){
             res.status(400);
@@ -174,7 +174,7 @@ server.del('order/:id',(req, res)=>{
     });
 });
 
-server.listen(port, err => {
+eventLoop.listen(port, err => {
     if (err) {
         console.error(err)
     }
