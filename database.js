@@ -38,27 +38,3 @@ exports.createTables = function(conData, callback){
         console.log("Table created");
     });
 };
-
-//To check all items
-selectAllOrders = function(conData, callback){
-    var con =mysql.createConnection({
-      host:"localhost",
-      user:"root",
-      password:"password",
-      database:"SmartMart"
-    });
-
-    var milk = 'milk'
-    var sql = 'SELECT * FROM Stock;'
-    //var sql ="SELECT item_id FROM Stock ORDER BY item_id DESC LIMIT 1;"
-    //var sql ="ALTER TABLE Order_Items ADD PRIMARY KEY(order_id,item_id);"
-    var x;
-    con.query(sql, function(err, x){
-      if (err) throw err;
-      for(i=0; i<x.length; i++){
-        console.log(x[i].item_name);
-      }
-    });
-};
-
- //selectAllOrders();

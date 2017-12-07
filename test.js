@@ -1,1 +1,1 @@
-return {"hello":"world"};
+//depreciated

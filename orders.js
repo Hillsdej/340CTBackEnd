@@ -1,5 +1,5 @@
 var db = require('./database');
-var auth = require('./authentication');
+var authenticationProcessor = require('./authentication');
 
 
 exports.add = function(conData, req, callback){
@@ -10,7 +10,7 @@ exports.add = function(conData, req, callback){
             return;
         }
 
-        auth.loginStaff(conData, req, function(err, result){
+        authenticationProcessor.loginStaff(conData, req, function(err, result){
             if (err){
                 console.log("entered")
                 let err = "incorrect name or password";
@@ -84,7 +84,7 @@ exports.updateById = function(conData, req, callback){
             return;
         }
 
-        auth.loginStaff(conData, req, function(err, result){
+        authenticationProcessor.loginStaff(conData, req, function(err, result){
             if (err){
                 callback(err);
                 return;
