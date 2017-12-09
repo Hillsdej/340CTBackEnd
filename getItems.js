@@ -1,3 +1,4 @@
+//depreciated/unused
 var db = require("./database");
 
 exports.getAll = function(conData, req, callback){

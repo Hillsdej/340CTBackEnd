@@ -1,6 +1,5 @@
 var db = require('./database');
-var validate = require('./validation')
-var stock = require('./stock')
+var validateProcessor = require('./validation')
 //var authentication = require('./security')
 //const bcrypt = require('bcryptjs')
 //var auth = require('./authenticate');
@@ -27,7 +26,7 @@ exports.add = function(conData, req, callback){
         for(var i in item)
             itemArray.push(item[i]);
 
-        var validateStr = validate.validateStr(item.item_name);
+        var validateStr = validateProcessor.validateStr(item.item_name);
         if (validateStr == "invalid"){
             let err = "invalid type"
             callback(err);
@@ -47,7 +46,7 @@ exports.add = function(conData, req, callback){
         
         
         for (i=2; i<6; i++){
-            var validateInt = validate.validateInt(itemArray[i]);
+            var validateInt = validateProcessor.validateInt(itemArray[i]);
             if (validateInt == "invalid"){
                 console.log("error at: "+ i)
                 let err = "invalid type"

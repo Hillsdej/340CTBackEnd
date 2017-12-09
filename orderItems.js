@@ -1,5 +1,4 @@
 var db = require('./database');
-var auth = require('./authentication');
 
 exports.getAll = function(conData, req, callback){
     "use strict"

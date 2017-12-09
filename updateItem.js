@@ -1,3 +1,4 @@
+//depreciated/unused
 var db = require('./database');
 
 // use get method to retrieve name of item from frontend form data
